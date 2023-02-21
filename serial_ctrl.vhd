@@ -10,6 +10,7 @@ port(
         serial_up           : in std_logic; -- Pulsed high when x"55" or x"75"
         serial_down         : in std_logic; -- Pulsed high when x"64" or x"44"
     -- Inputs
+        clk_50              : in std_logic;
         received_data_valid : in std_logic; -- Pulsed high one clock cycle
         received_data       : in std_logic_vector(7 downto 0) -- An ASCII char
 );

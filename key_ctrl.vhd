@@ -39,12 +39,13 @@ end entity key_ctrl;
 architecture rtl of key_ctrl is
 
 -- Signals
-    signal s_key_n_1r   : std_logic_vector(3 downto 0);
-    signal s_key_n_2r   : std_logic_vector(3 downto 0);
+    signal key_n_1r         : std_logic_vector(3 downto 0);
+    signal key_n_2r         : std_logic_vector(3 downto 0);
 
-    signal s_counter    : integer range 0 to 1;
+    -- Counter to allow outputs to be toggled high one clock cycle.
+    signal counter_1_cycle  : integer range 0 to 1;
     -- 1 clock cycle is 20 ns, 5 cycles is 100 ns, 10 ms is 10 000000 ns.
-    signal s_count_10ms : integer range 0 to 10000000 - 1;
+    signal count_10ms       : integer range 0 to 10000000 - 1;
 
 begin
 
@@ -52,8 +53,8 @@ begin
     p_sync_inputs       : process(clk_50) is
     begin
         if rising_edge(clk_50) then
-            s_key_n_1r(3 downto 0)  <= key_n(3 downto 0);
-            s_key_n_2r(3 downto 0)  <= s_key_n_1r(3 downto 0);
+            key_n_1r(3 downto 0)  <= key_n(3 downto 0);
+            key_n_2r(3 downto 0)  <= key_n_1r(3 downto 0);
         end if;
     end process p_sync_inputs;
 
@@ -61,14 +62,12 @@ begin
     p_key_ctrl          : process(clk_50) is
     begin
         if rising_edge(clk_50) then
-            --if s_key_n_2r(0) = '1' then -- "key_n 3,2 and 1 shall be ignored if key_n(0) is pushed down."
-                case s_key_n_2r is
-                    when x"0" =>
-                        
+            case key_n_2r is
+                when x"0" =>
+                    
 
 
-                end case;
-            --end if;
+            end case;
         end if;
 
     end process p_key_ctrl;
